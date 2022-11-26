@@ -4,7 +4,7 @@ import time
 from functools import wraps
 
 ROOT_DIR = Path(__file__).parent.parent.parent
-DATA_PATH = abspath(join("asset", "kv", "sample_data.txt"))
+DATA_PATH = abspath(join("asset", "kv", "data.txt"))
 WAREHOUSE_PATH = abspath(join("asset", "spark-warehouse"))
 
 def timer(func):
@@ -37,4 +37,4 @@ class MySQL:
     pass
 
 def run():
-  pass
+  return 0, 0

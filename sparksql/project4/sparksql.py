@@ -3,13 +3,12 @@ from pyspark.sql import SparkSession
 from pyspark.sql import Row
 from pathlib import Path
 import time 
+import json
 from functools import wraps
+from config import DATA_PATH, DATA_STORE_PATH, WAREHOUSE_PATH
 
 DB_TYPE = "sparksql"
-ROOT_DIR = Path(__file__).parent.parent.parent
-DATA_PATH = abspath(join("asset", "kv", "sample_data.txt"))
-WAREHOUSE_PATH = abspath(join(ROOT_DIR, "spark-warehouse"))
-print(WAREHOUSE_PATH)
+
 
 def timer(func):
   @wraps(func)
@@ -19,7 +18,10 @@ def timer(func):
     end_time = time.perf_counter()
     total_time = end_time - start_time
     print(f'Function {func.__name__} Took {total_time:.4f} seconds')
-    return result
+    # with open(DATA_STORE_PATH, "a+") as f:
+    #   data_store = json.loads(f)
+    #   data_store[]
+    return result, total_time
   return time_wrapper
 
 
@@ -40,18 +42,20 @@ class SparkSQL:
 
   @timer
   def load_data(self):
-    self.spark.sql(f"LOAD DATA LOCAL INPATH '{DATA_PATH}' INTO TABLE src") # TODO: benchmark
+    self.spark.sql(f"LOAD DATA LOCAL INPATH '{DATA_PATH}' INTO TABLE src")
 
   @timer
   def query_data(self):
-    self.spark.sql("SELECT key, value FROM src WHERE key < 10 ORDER BY key").show() # TODO: benchmark
+    self.spark.sql("SELECT * FROM src s1 JOIN src s2 WHERE s1.key > 1000 ORDER BY s1.key").show()
 
 def run():
+  load_runtime, query_runtime = 0, 0
   spark_sql = SparkSQL()
   try:
     spark_sql.create()
-    spark_sql.load_data()
-    spark_sql.query_data()
+    _, load_runtime = spark_sql.load_data()
+    _, query_runtime = spark_sql.query_data()
   except Exception as e:
     print(e)
   spark_sql.stop()
+  return load_runtime, query_runtime
