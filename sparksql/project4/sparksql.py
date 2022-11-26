@@ -18,9 +18,6 @@ def timer(func):
     end_time = time.perf_counter()
     total_time = end_time - start_time
     print(f'Function {func.__name__} Took {total_time:.4f} seconds')
-    # with open(DATA_STORE_PATH, "a+") as f:
-    #   data_store = json.loads(f)
-    #   data_store[]
     return result, total_time
   return time_wrapper
 
