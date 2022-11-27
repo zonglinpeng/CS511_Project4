@@ -26,20 +26,24 @@ class MySQL_:
       database="mysql",
       allow_local_infile=True
     )
+    cursor = self.mysql_.cursor()
+    cursor.execute("SET GLOBAL local_infile=1")
+
 
   def create(self):
-    # "CREATE TABLE IF NOT EXISTS src (i_key STRING, j_value STRING)
+    # "CREATE TABLE IF NOT EXISTS src (key STRING, value STRING)
     cursor = self.mysql_.cursor()
     try:
         cursor.execute(
-            "CREATE TABLE IF NOT EXISTS SRC (i_key varchar(255), j_value varchar(255));")
+            "CREATE TABLE IF NOT EXISTS src (`key` varchar(255), value varchar(255));")
     except mysql.connector.Error as err:
         print("Failed creating database: {}".format(err))
         exit(1)
-    # pass
   
   def stop(self):
-    pass
+    cursor = self.mysql_.cursor()
+    cursor.execute("SET GLOBAL local_infile=0")
+    self.mysql_.close()
 
   @timer
   def load_data(self):
@@ -47,18 +51,13 @@ class MySQL_:
     cursor = self.mysql_.cursor()
     query = (f"LOAD DATA LOCAL INFILE '{DATA_PATH}' INTO TABLE src")
     cursor.execute(query)
-    pass
 
   @timer
   def query_data(self):
     cursor = self.mysql_.cursor()
-    query = ("SELECT * FROM src s1 JOIN src s2 WHERE s1.i_key > 1000 ORDER BY s1.i_key")
+    query = ("SELECT * FROM src s1 JOIN src s2 WHERE s1.key > 1000 ORDER BY s1.key")
     cursor.execute(query)
 
-  def stop(self):
-    self.mysql_.close()
-    # SELECT * FROM src s1 JOIN src s2 WHERE s1.i_key > 1000 ORDER BY s1.i_key
-    # pass
 
 def run():
   load_runtime, query_runtime = 0, 0
@@ -67,7 +66,6 @@ def run():
     my_sql.create()
     _, load_runtime = my_sql.load_data()
     _, query_runtime = my_sql.query_data()
-    my_sql.stop()
   except Exception as e:
     print(e)
     
