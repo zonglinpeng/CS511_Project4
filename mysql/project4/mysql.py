@@ -1,11 +1,20 @@
-from os.path import expanduser, join, abspath, dirname
-from pathlib import Path
-import time 
+import time
 from functools import wraps
+from os.path import abspath, dirname, expanduser, join
+from pathlib import Path
+
+from pymysql import connect
 
 ROOT_DIR = Path(__file__).parent.parent.parent
 DATA_PATH = abspath(join("asset", "kv", "data.txt"))
 WAREHOUSE_PATH = abspath(join("asset", "spark-warehouse"))
+
+DB_CONFIG = {
+    'host':'localhost',
+    'user': 'root',
+    'password': 'weikunwu0314',
+    'local_infile': 'True'
+}
 
 def timer(func):
   @wraps(func)
@@ -20,27 +29,38 @@ def timer(func):
 
 class MySQL:
   def __init__(self):
-    self.mysql = None # TODO MySQL connector
+    db = connect(**DB_CONFIG)
+    db.select_db("project4")
+    cursor = db.cursor()
+    cursor.execute("SET GLOBAL local_infile=1")
+    db.commit()
+    self.mysql = db
 
   def create(self):
     # "CREATE TABLE IF NOT EXISTS src (key STRING, value STRING)
-    pass
+    cursor = self.mysql.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS src (`key` INT, value VARCHAR(255))")
+    self.mysql.commit()
   
   def stop(self):
-    pass
+    self.mysql.close()
 
   @timer
   def load_data(self):
     # LOAD DATA LOCAL INFILE '{DATA_PATH}' INTO TABLE src
-    pass
+    cursor = self.mysql.cursor()
+    cursor.execute(f"LOAD DATA LOCAL INFILE '{DATA_PATH}' INTO TABLE src")
+    self.mysql.commit()
+
 
   @timer
   def query_data(self):
     # SELECT * FROM src s1 JOIN src s2 WHERE s1.key > 1000 ORDER BY s1.key
-    pass
+    self.mysql.cursor().execute("SELECT * FROM src s1 JOIN src s2 WHERE s1.key > 1000 ORDER BY s1.key")
 
 def run():
   load_runtime, query_runtime = 0, 0
+  print("Running MySQL")
   my_sql = MySQL()
   try:
     my_sql.create()

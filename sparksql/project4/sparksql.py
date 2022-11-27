@@ -47,6 +47,7 @@ class SparkSQL:
 
 def run():
   load_runtime, query_runtime = 0, 0
+  print("Running SparkSQL")
   spark_sql = SparkSQL()
   try:
     spark_sql.create()
