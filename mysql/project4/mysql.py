@@ -2,7 +2,6 @@ from os.path import expanduser, join, abspath, dirname
 from pathlib import Path
 import time 
 from functools import wraps
-import mysql.connector
 
 ROOT_DIR = Path(__file__).parent.parent.parent
 DATA_PATH = abspath(join("asset", "kv", "data.txt"))
@@ -19,7 +18,7 @@ def timer(func):
     return result, total_time
   return time_wrapper
 
-class MySQL_:
+class MySQL:
   def __init__(self):
     self.mysql_ = mysql.connector.connect(
       user="root",
@@ -61,14 +60,13 @@ class MySQL_:
 
 def run():
   load_runtime, query_runtime = 0, 0
-  my_sql = MySQL_()
+  my_sql = MySQL()
   try:
     my_sql.create()
     _, load_runtime = my_sql.load_data()
     _, query_runtime = my_sql.query_data()
   except Exception as e:
     print(e)
-    
   my_sql.stop()
   return load_runtime, query_runtime
 
