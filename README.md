@@ -3,8 +3,9 @@ Author:
 Zonglin Peng(zonglin7)
 
 ## Submission
-* Report: [Link](https://docs.google.com/document/d/1HNopPgIyL_ha0OwhbVALGIX-qCNVZrnwBTMwq66c_NM/edit?usp=sharing) to Google Doc (access with @illinois email)
-* Video: TODO
+* Google Drive [Link](https://drive.google.com/drive/folders/1ESwXogN9JaE93GE0HjGf4zN7yQScD4xE?usp=sharing) (access with @illinois email)
+* Report: Google Doc [Link](https://docs.google.com/document/d/1HNopPgIyL_ha0OwhbVALGIX-qCNVZrnwBTMwq66c_NM/edit?usp=sharing)
+* Video: Uploaded to Drive
 
 ## Description
 This benchmark compares the read and write performance of SparkSQL and MySQL
