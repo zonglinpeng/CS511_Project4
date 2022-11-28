@@ -1,6 +1,6 @@
 from os.path import expanduser, join, abspath, dirname
 from sparksql.project4 import sparksql
-from mysql.project4 import mysql
+from mysql_.project4 import mysql_
 from .datagen import datagen
 from math import log10
 import matplotlib.pyplot as plt
@@ -18,7 +18,7 @@ class Benchmark:
       load_runtime, query_runtime = sparksql.run()
       spark_load_data.append(load_runtime)
       spark_query_data.append(query_runtime)
-      load_runtime, query_runtime = mysql.run()
+      load_runtime, query_runtime = mysql_.run()
       my_load_data.append(load_runtime)
       my_query_data.append(query_runtime)
     

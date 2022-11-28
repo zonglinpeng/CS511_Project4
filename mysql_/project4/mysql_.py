@@ -2,6 +2,7 @@ from os.path import expanduser, join, abspath, dirname
 from pathlib import Path
 import time 
 from functools import wraps
+import mysql.connector
 
 ROOT_DIR = Path(__file__).parent.parent.parent
 DATA_PATH = abspath(join("asset", "kv", "data.txt"))
@@ -56,6 +57,7 @@ class MySQL:
     cursor = self.mysql_.cursor()
     query = ("SELECT * FROM src s1 JOIN src s2 WHERE s1.key > 1000 ORDER BY s1.key")
     cursor.execute(query)
+    data = cursor.fetchall()
 
 
 def run():
