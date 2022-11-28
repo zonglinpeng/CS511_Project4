@@ -9,7 +9,7 @@ from tabulate import tabulate
 
 class Benchmark:
   def __init__(self) -> None:
-    self.data_size = [10**i for i in range(1, 8)]
+    self.data_size = [10**i for i in range(1, 7)]
   
   def run(self):
     spark_load_data, my_load_data = [], []
@@ -49,7 +49,7 @@ class Benchmark:
     plt.plot(x, spark_load_data, '--o', label="SparkSQL")
     plt.plot(x, my_load_data, '--o', label="MySQL")
     plt.title("SQL Load Data")
-    plt.xlabel('10^N data entres') 
+    plt.xlabel('10^N data entries') 
     plt.ylabel('Overhead(seconds)') 
     plt.legend()
     plt.show()
@@ -57,7 +57,7 @@ class Benchmark:
     plt.plot(x, spark_query_data, '--o', label="SparkSQL")
     plt.plot(x, my_query_data, '--o', label="MySQL")
     plt.title("SQL Query Data")
-    plt.xlabel('10^N data entres') 
+    plt.xlabel('10^N data entries') 
     plt.ylabel('Overhead(seconds)') 
     plt.legend()
     plt.show()
