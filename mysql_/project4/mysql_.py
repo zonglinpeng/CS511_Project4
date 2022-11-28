@@ -25,7 +25,7 @@ class MySQL:
     self.mysql_ = mysql.connector.connect(
       user="root",
       database="project4",
-      password="weikunwu0314",
+      password="cs511-rubfish",
       allow_local_infile=True
     )
     cursor = self.mysql_.cursor()
