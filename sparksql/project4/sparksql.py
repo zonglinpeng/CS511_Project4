@@ -32,7 +32,8 @@ class SparkSQL:
         .getOrCreate()
 
   def create(self):
-    self.spark.sql("CREATE TABLE IF NOT EXISTS src (key STRING, value STRING) USING hive")
+    self.spark.sql("DROP TABLE IF EXISTS src")
+    self.spark.sql("CREATE TABLE IF NOT EXISTS src (key INT, value STRING) USING hive")
     
   def stop(self):
     self.spark.stop()
@@ -43,7 +44,7 @@ class SparkSQL:
 
   @timer
   def query_data(self):
-    self.spark.sql("SELECT * FROM src s1 JOIN src s2 WHERE s1.key > 1000 ORDER BY s1.key").show()
+    self.spark.sql("SELECT * FROM src ORDER BY key").show()
 
 def run():
   load_runtime, query_runtime = 0, 0

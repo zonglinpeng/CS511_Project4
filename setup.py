@@ -13,7 +13,7 @@ setup(
     python_requires=">=3.7,",
     packages=["."],
     include_package_data=True,
-    install_requires=["pyspark==3.3.1", "matplotlib", "black"],
+    install_requires=["pyspark==3.3.1", "matplotlib", "black", "mysql-connector-python", "tabulate"],
     long_description=read("README.md"),
     classifiers=[
         "Programming Language :: Python :: 3.9",
