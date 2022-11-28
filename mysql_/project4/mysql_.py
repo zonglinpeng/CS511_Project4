@@ -3,6 +3,7 @@ from pathlib import Path
 import time 
 from functools import wraps
 import mysql.connector
+from tabulate import tabulate
 
 ROOT_DIR = Path(__file__).parent.parent.parent
 DATA_PATH = abspath(join("asset", "kv", "data.txt"))
@@ -23,7 +24,8 @@ class MySQL:
   def __init__(self):
     self.mysql_ = mysql.connector.connect(
       user="root",
-      database="mysql",
+      database="project4",
+      password="cs511-rubfish",
       allow_local_infile=True
     )
     cursor = self.mysql_.cursor()
@@ -31,11 +33,12 @@ class MySQL:
 
 
   def create(self):
-    # "CREATE TABLE IF NOT EXISTS src (key STRING, value STRING)
+    # "CREATE TABLE IF NOT EXISTS src (k STRING, val STRING)
     cursor = self.mysql_.cursor()
     try:
+        cursor.execute("DROP TABLE IF EXISTS src")
         cursor.execute(
-            "CREATE TABLE IF NOT EXISTS src (`key` varchar(255), value varchar(255));")
+            "CREATE TABLE IF NOT EXISTS src (k INT, val varchar(255));")
     except mysql.connector.Error as err:
         print("Failed creating database: {}".format(err))
         exit(1)
@@ -49,15 +52,18 @@ class MySQL:
   def load_data(self):
     # LOAD DATA LOCAL INFILE '{DATA_PATH}' INTO TABLE src
     cursor = self.mysql_.cursor()
-    query = (f"LOAD DATA LOCAL INFILE '{DATA_PATH}' INTO TABLE src")
+    query = (f"LOAD DATA LOCAL INFILE '{DATA_PATH}' INTO TABLE src FIELDS TERMINATED BY ''")
     cursor.execute(query)
 
   @timer
   def query_data(self):
     cursor = self.mysql_.cursor()
-    query = ("SELECT * FROM src s1 JOIN src s2 WHERE s1.key > 1000 ORDER BY s1.key")
+    query = ("SELECT * FROM src s1 CROSS JOIN src s2 ORDER BY s1.k, s2.k")
     cursor.execute(query)
+    table = [['key', 'value','key','value']]
     data = cursor.fetchall()
+    table.extend(data[:20])
+    print(tabulate(table))
 
 
 def run():

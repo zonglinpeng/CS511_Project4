@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 class Benchmark:
   def __init__(self) -> None:
-    self.data_size = [10**i for i in range(1, 6)]
+    self.data_size = [10**i for i in range(1, 5)]
   
   def run(self):
     spark_load_data, my_load_data = [], []
@@ -25,7 +25,7 @@ class Benchmark:
     x = [int(log10(size)) for size in self.data_size]
     
     plt.plot(x, spark_load_data, '--o', label="SparkSQL")
-    plt.plot(x, my_load_data, '--o', label="MykSQL")
+    plt.plot(x, my_load_data, '--o', label="MySQL")
     plt.title("SQL Load Data")
     plt.xlabel('10^N data entres') 
     plt.ylabel('Overhead(seconds)') 
@@ -33,7 +33,7 @@ class Benchmark:
     plt.show()
     
     plt.plot(x, spark_query_data, '--o', label="SparkSQL")
-    plt.plot(x, my_query_data, '--o', label="MykSQL")
+    plt.plot(x, my_query_data, '--o', label="MySQL")
     plt.title("SQL Query Data")
     plt.xlabel('10^N data entres') 
     plt.ylabel('Overhead(seconds)') 
