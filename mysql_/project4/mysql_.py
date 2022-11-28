@@ -59,8 +59,10 @@ class MySQL:
   def query_data(self):
     cursor = self.mysql_.cursor()
     query = ("SELECT * FROM src s1 CROSS JOIN src s2 ORDER BY s1.k, s2.k")
+    print("Executing Query")
     cursor.execute(query)
     table = [['key', 'value','key','value']]
+    print("Fetching Data")
     data = cursor.fetchall()
     table.extend(data[:20])
     print(tabulate(table))
