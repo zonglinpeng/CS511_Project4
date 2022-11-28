@@ -25,7 +25,7 @@ class MySQL:
     self.mysql_ = mysql.connector.connect(
       user="root",
       database="project4",
-      password="cs511-rubfish",
+      password="weikunwu0314",
       allow_local_infile=True
     )
     cursor = self.mysql_.cursor()
@@ -58,10 +58,10 @@ class MySQL:
   @timer
   def query_data(self):
     cursor = self.mysql_.cursor()
-    query = ("SELECT * FROM src s1 CROSS JOIN src s2 ORDER BY s1.k, s2.k")
+    query = ("SELECT * FROM src ORDER BY k")
     print("Executing Query")
     cursor.execute(query)
-    table = [['key', 'value','key','value']]
+    table = [['key', 'value']]
     print("Fetching Data")
     data = cursor.fetchall()
     table.extend(data[:20])

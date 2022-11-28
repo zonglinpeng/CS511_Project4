@@ -44,7 +44,7 @@ class SparkSQL:
 
   @timer
   def query_data(self):
-    self.spark.sql("SELECT * FROM src s1 CROSS JOIN src s2 ORDER BY s1.key, s2.key").show()
+    self.spark.sql("SELECT * FROM src ORDER BY key").show()
 
 def run():
   load_runtime, query_runtime = 0, 0
